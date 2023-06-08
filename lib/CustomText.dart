@@ -13,7 +13,7 @@ class CustomTexts {
   static String adharFrontLabel="Select File (Front Side)";
   static String adharBackLabel="Select File (Back Side)";
   static String panFrontLabel="Select File (Front Side)";
-  static String panBackLabel="Select File (Back Side)";
+  static String panBackLabel="Select Passport Photo";
 
 
 }

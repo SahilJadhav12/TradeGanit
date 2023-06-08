@@ -13,14 +13,15 @@ class SelectionType extends StatefulWidget {
 
 class _SelectionTypeState extends State<SelectionType> {
 
-  String categoryValue="Option 1";
-  String accountTypeValue="Option 1";
-  String broker="Option 1";
+  String categoryValue="AYAN";
+  String accountTypeValue="Checking Account1";
+  String broker="BOBC";
   int activeStep=0;
   var _formKey = GlobalKey<FormState>();
   SingleValueDropDownController selectCategoryController = SingleValueDropDownController();
   SingleValueDropDownController accountTypeController = SingleValueDropDownController();
   SingleValueDropDownController brokerController = SingleValueDropDownController();
+
 
   void _navigateToPersonalDetail() {
     Navigator.of(context).push(
@@ -28,6 +29,13 @@ class _SelectionTypeState extends State<SelectionType> {
         builder: (context) => const PersonalDetail(),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // selectCategoryController.dropDownValue!.value.toString()=="";
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -108,7 +116,7 @@ class _SelectionTypeState extends State<SelectionType> {
                           }
                         },
                         dropDownList: const [
-                          DropDownValueModel(name: 'Checking Account', value: "OpChecking Accounttion1"),
+                          DropDownValueModel(name: 'Checking Account', value: "Checking Account"),
                           DropDownValueModel(name: 'Savings Account', value: "Savings Account"),
                           DropDownValueModel(name: 'Certificate of Deposit (CD)', value: "Certificate of Deposit (CD)"),
                           DropDownValueModel(name: 'Joint Account', value: "Joint Account"),
@@ -150,15 +158,10 @@ class _SelectionTypeState extends State<SelectionType> {
                           }
                         },
                         dropDownList: const [
-                          DropDownValueModel(name: 'Option1', value: "Option1"),
-                          DropDownValueModel(name: 'Option2', value: "Option2"),
-                          DropDownValueModel(name: 'Option3', value: "Option3"),
-                          DropDownValueModel(name: 'Option4', value: "Option4"),
-                          DropDownValueModel(name: 'Option5', value: "Option5"),
-                          DropDownValueModel(name: 'Option6', value: "Option6"),
+                          DropDownValueModel(name: 'BOBC', value: "BOBC"),
                         ],
                         listTextStyle: const TextStyle(color: Colors.black),
-                        dropDownItemCount: 5,
+                        dropDownItemCount: 1,
 
                         onChanged: (val) {
                         },
@@ -168,12 +171,29 @@ class _SelectionTypeState extends State<SelectionType> {
                 ),
               ),
               ElevatedButton(
+
                 onPressed: () {
-                  // final isValid = _formKey.currentState!.validate();
-                  // if (!isValid) {
-                  //   return;
+                  // if(selectCategoryController.dropDownValue!.value.toString()=="")
+                  //   {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text("Please select category")),
+                  //     );
+                  //   }
+                  // else if(accountTypeController.dropDownValue!.value.toString()=="")
+                  //   {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text("Please select Account Type")),
+                  //     );
+                  //   }
+                  // else if(brokerController.dropDownValue!.value.toString()=="")
+                  //   {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text("Please select broker")),
+                  //     );
+                  //   }
+                  // else{
+                    _navigateToPersonalDetail();
                   // }
-                  _navigateToPersonalDetail();
                 },
                 style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
                 child: Text('Next'),
@@ -190,11 +210,6 @@ class _SelectionTypeState extends State<SelectionType> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

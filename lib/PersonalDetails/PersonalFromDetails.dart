@@ -3,6 +3,7 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:trade_ganit/BankDetail/BankDetail.dart';
 import 'package:trade_ganit/Common/CommonTextField.dart';
+import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/Common/ImagePath.dart';
 import 'package:trade_ganit/CustomText.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
@@ -156,7 +157,7 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                 label: "Father Name/Spouse Name",
               ),
               CommonTextField(
-                controller: mobileNumberController,
+                controller: motherNameTextInputController,
                 label: "Mother Name",
               ),
               Container(
@@ -172,6 +173,12 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                   keyboardType: TextInputType.emailAddress,
                   controller: dateOfBirthController,
                   readOnly: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter value';
+                    }
+                    return null;
+                  },
                   onTap: () {
                     _dateBirth();
                   },
@@ -259,6 +266,7 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                 controller: emailIdController,
                 label: "Email Id",
                 imagePath: ImagePath.emailPath,
+                isEmail: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
@@ -275,43 +283,19 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                 controller: mobileNumberController,
                 label: "Mobile Number",
                 imagePath: ImagePath.phonePath,
-              ),
-              CommonTextField(
-                controller: addressTextInput,
-                label: "Address",
-                imagePath: ImagePath.addressPath,
-              ),
-              //TODO:If require in future.
-              // Container(
-              //   padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
-              //   child: TextFormField(
-              //     decoration: InputDecoration(labelText: 'Landmark'),
-              //     controller: landmarkTextInputController,
-              //     onFieldSubmitted: (value) {
-              //       setState(() {
-              //       });
-              //     },
-              //   ),
-              // ),
-              CommonTextField(controller: cityTextInput,
-              label: "City",
-                imagePath: ImagePath.addressPath,
-              ),
-              CommonTextField(controller: stateTextInput,
-                label: "State",
-                imagePath: ImagePath.addressPath,
-              ),
-              CommonTextField(controller: pincodeTextInput,
-                label: "Pincode",
-                imagePath: ImagePath.addressPath,
+                maxlength: 10,
+                textInputType: TextInputType.number,
               ),
               CommonTextField(controller: adharNumberTextInput,
                 label: "Adhaar Number",
                 imagePath: ImagePath.cardPath,
+                maxlength: 12,
+                textInputType: TextInputType.number,
               ),
               CommonTextField(controller: panNumberTextInputController,
                 label: "Pan Number",
                 imagePath: ImagePath.cardPath,
+                textInputType: TextInputType.number,
               ),
               Container(
                 padding: EdgeInsets.all(10),
@@ -333,12 +317,36 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                       padding: EdgeInsets.all(10),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if(genderController.dropDownValue==null)
+                            {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Please select value of gender")),
+                              );
+                            }
+                          else if(categoryController.dropDownValue==null)
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Please select Category")),
+                            );
+                          }
+                          else if (_formKey.currentState!.validate()) {
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
+                            CommonValue.fullName=fullNameTextInput.text;
+                            CommonValue.fatherName=fatherNameTextInputController.text;
+                            CommonValue.motherName=motherNameTextInputController.text;
+                            CommonValue.dateOfBirth=dateOfBirthController.text;
+                            CommonValue.gender=genderController.dropDownValue!.value.toString();
+                            CommonValue.category=categoryController.dropDownValue!.value.toString();
+                            CommonValue.emailId=emailIdController.text;
+                            CommonValue.mobileNumber=mobileNumberController.text;
+                            // CommonValue.address=addressTextInput.text;
+                            // CommonValue.city=cityTextInput.text;
+                            // CommonValue.state=stateTextInput.text;
+                            // CommonValue.pincode=pincodeTextInput.text;
+                            CommonValue.adhaarNumber=adharNumberTextInput.text;
+                            CommonValue.panNumber=panNumberTextInputController.text;
+                            _navigateToPersonalFormDetail();
                           }
                           //_navigateToPersonalFormDetail();
                         },

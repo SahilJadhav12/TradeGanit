@@ -1,7 +1,10 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 
+import 'Common/CommonTextField.dart';
+import 'Common/ImagePath.dart';
 import 'CustomText.dart';
 
 class ProofOfIdentifyAndAddress extends StatefulWidget {
@@ -16,6 +19,7 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
   TextEditingController cityTextInput = TextEditingController();
   TextEditingController stateTextInput = TextEditingController();
   TextEditingController pincodeTextInput = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   int activeStep = 2;
   @override
   void initState() {
@@ -34,187 +38,150 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
       ),
       body: Container(
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: EasyStepper(
-                  activeStep: activeStep,
-                  lineLength: 70,
-                  lineSpace: 0,
-                  lineType: LineType.normal,
-                  defaultLineColor: Colors.white,
-                  finishedLineColor: Colors.blue,
-                  activeStepTextColor: Colors.black87,
-                  finishedStepTextColor: Colors.black87,
-                  internalPadding: 0,
-                  showLoadingAnimation: false,
-                  stepRadius: 8,
-                  showStepBorder: false,
-                  lineDotRadius: 1.5,
-                  steps: [
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 0 ? Colors.blue : Colors.white,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: EasyStepper(
+                    activeStep: activeStep,
+                    lineLength: 70,
+                    lineSpace: 0,
+                    lineType: LineType.normal,
+                    defaultLineColor: Colors.white,
+                    finishedLineColor: Colors.blue,
+                    activeStepTextColor: Colors.black87,
+                    finishedStepTextColor: Colors.black87,
+                    internalPadding: 0,
+                    showLoadingAnimation: false,
+                    stepRadius: 8,
+                    showStepBorder: false,
+                    lineDotRadius: 1.5,
+                    steps: [
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 0 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Personal',
                       ),
-                      title: 'Personal',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 1 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 1 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Bank',
+                        topTitle: true,
                       ),
-                      title: 'Bank',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 2 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 2 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Proof of Identity',
                       ),
-                      title: 'Proof of Identity',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 3 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 3 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Nominee',
+                        topTitle: true,
                       ),
-                      title: 'Nominee',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 4 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 4 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Additional',
                       ),
-                      title: 'Additional',
-                    ),
-                  ],
-                  onStepReached: (index) =>
-                      setState(() => activeStep = index),
+                    ],
+                    onStepReached: (index) =>
+                        setState(() => activeStep = index),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Address'),
+                CommonTextField(
                   controller: addressTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
+                  label: "Address",
+                  imagePath: ImagePath.addressPath,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'City'),
-                  controller: cityTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
+                CommonTextField(controller: cityTextInput,
+                label: "City",
+                  imagePath: ImagePath.addressPath,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'State'),
-                  controller: stateTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
+                CommonTextField(controller: stateTextInput,
+                  label: "State",
+                  imagePath: ImagePath.addressPath,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Pincode'),
-                  controller: pincodeTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
+                CommonTextField(controller: pincodeTextInput,
+                  label: "pin code",
+                  imagePath: ImagePath.addressPath,
+                  textInputType: TextInputType.number,
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context,true);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(130, 50)),
-                        child: Text('Previous'),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context,true);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(130, 50)),
+                          child: Text('Previous'),
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _navigateToPersonalFormDetail();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(130, 50)),
-                        child: Text('Next'),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              CommonValue.address=addressTextInput.text;
+                              CommonValue.city=cityTextInput.text;
+                              CommonValue.state=stateTextInput.text;
+                              CommonValue.pincode==pincodeTextInput.text;
+                              _navigateToPersonalFormDetail();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(130, 50)),
+                          child: Text('Next'),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

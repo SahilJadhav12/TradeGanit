@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/CustomText.dart';
 import 'package:trade_ganit/PersonalDetails/PersonalFromDetails.dart';
 
@@ -18,7 +21,7 @@ class PersonalDetail extends StatefulWidget {
 class _PersonalDetailState extends State<PersonalDetail> {
 
   XFile? image;
-  XFile? image2,image3,image4;
+  XFile? image2,image3,image4,passportImageFront,passportImageBack;
   int activeStep=0;
 
   String textchange="Select File (Back Side)";
@@ -223,6 +226,10 @@ class _PersonalDetailState extends State<PersonalDetail> {
                       ),
                     ),
                     Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(left: 40,top: 10),
+                        child: Text('Upload Photo',)),
+                    Container(
                       margin: EdgeInsets.all(10),
                       child: InkWell(
                         onTap: (){
@@ -249,6 +256,62 @@ class _PersonalDetailState extends State<PersonalDetail> {
                       ),
                     ),
                     Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(left: 40,top: 10),
+                        child: Text('Upload Passport Image')),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: InkWell(
+                        onTap: (){
+                          companyImageUpload("passportFront");
+                        },
+                        child: passportImageFront !=null
+                            ? Image.file(
+                          //to show image, you type like this.
+                          File(passportImageFront!.path),
+                          fit: BoxFit.cover,
+                          height: 200,
+                        ):
+                        DottedBorder(
+                          dashPattern: [4, 3],
+                          strokeWidth: 2,
+                          strokeCap: StrokeCap.round,
+                          child: Container(
+                            color: Colors.white,
+                            height: 200,
+                            alignment: Alignment.center,
+                            child: Text(CustomTexts.adharFrontLabel),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: InkWell(
+                        onTap: (){
+                          companyImageUpload("passportBack");
+                        },
+                        child: passportImageBack !=null
+                            ? Image.file(
+                          //to show image, you type like this.
+                          File(passportImageBack!.path),
+                          fit: BoxFit.cover,
+                          height: 200,
+                        ):
+                        DottedBorder(
+                          dashPattern: [4, 3],
+                          strokeWidth: 2,
+                          strokeCap: StrokeCap.round,
+                          child: Container(
+                            color: Colors.white,
+                            height: 200,
+                            alignment: Alignment.center,
+                            child: Text(CustomTexts.adharBackLabel),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
                       padding: EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,8 +330,61 @@ class _PersonalDetailState extends State<PersonalDetail> {
                          Container(
                           padding: EdgeInsets.all(10),
                           child: ElevatedButton(
-                            onPressed: () {
-                              _navigateToPersonalFormDetail();
+                            onPressed: () async {
+                              if(image!=null&&image2!=null&&image3!=null&&image4!=null&&passportImageFront!=null&&passportImageBack!=null) {
+
+                                //Image of Adhaar front
+                                File file=File(image!.path);
+                                Uint8List imagebytes = await file.readAsBytes(); //convert to bytes
+                                String adharFront = base64.encode(imagebytes); //convert bytes to base64 string
+                                print(adharFront);
+
+                                //Image of Adhaar back
+                                File file2=File(image2!.path);
+                                Uint8List imagebytes2 = await file2.readAsBytes(); //convert to bytes
+                                String adharBack = base64.encode(imagebytes2); //convert bytes to base64 string
+                                print(adharBack);
+
+                                //Image of Pan card
+                                File file3=File(image3!.path);
+                                Uint8List imagebytes3 = await file3.readAsBytes(); //convert to bytes
+                                String panFront = base64.encode(imagebytes3); //convert bytes to base64 string
+                                print(panFront);
+
+                                //Image of Photo
+                                File file4=File(image4!.path);
+                                Uint8List imagebytes4 = await file4.readAsBytes(); //convert to bytes
+                                String photo = base64.encode(imagebytes4); //convert bytes to base64 string
+                                print(photo);
+
+                                //Image of PassportFront
+                                File file5=File(passportImageFront!.path);
+                                Uint8List imagebytes5 = await file5.readAsBytes(); //convert to bytes
+                                String adharFront5 = base64.encode(imagebytes5); //convert bytes to base64 string
+                                print(adharFront5);
+
+                                //Image of PassportBack
+                                File file6=File(passportImageBack!.path);
+                                Uint8List imagebytes6 = await file6.readAsBytes(); //convert to bytes
+                                String adharFront6 = base64.encode(imagebytes6); //convert bytes to base64 string
+                                print(adharFront6);
+
+                                //Saving Image value in base64
+                                CommonValue.adhaarFrontBase64=adharFront.toString();
+                                CommonValue.adhaarBackBase64=adharBack.toString();
+                                CommonValue.panFrontBase64=panFront.toString();
+                                CommonValue.photoBase64=photo.toString();
+                                CommonValue.passportFrontBase64=adharFront5.toString();
+                                CommonValue.passportBackBase64=adharFront6.toString();
+
+
+                                _navigateToPersonalFormDetail();
+
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text("Please select image")),
+                                        );
+                              }
                             },
                             style: ElevatedButton.styleFrom(fixedSize: const Size(130, 50)),
                             child: Text('Next'),
@@ -356,11 +472,20 @@ class _PersonalDetailState extends State<PersonalDetail> {
           image4 = img;
           getRecognisedText(image4!, card);
         }
+      else if(card=="passportFront"){
+        passportImageFront=img;
+          getRecognisedText(passportImageFront!, card);
+      }
+      else if(card=="passportBack"){
+        passportImageBack=img;
+        getRecognisedText(passportImageBack!, card);
+      }
     });
   }
 
   void getRecognisedText(XFile image,String card) async {
     RegExp exp = RegExp(r"^[0-9]+$");
+    //^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$
     RegExp expPanCard = RegExp(r"[A-Z]{5}[0-9]{4}[A-Z]{1}");
 
     final inputImage = InputImage.fromFilePath(image.path);

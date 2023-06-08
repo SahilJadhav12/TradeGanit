@@ -1,14 +1,15 @@
 import 'dart:convert';
 
-import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/dropdown.dart';
+import 'package:trade_ganit/AdditionalDetails.dart';
+import 'package:trade_ganit/BankDetail/BankDetail.dart';
 import 'package:trade_ganit/Common/CommonTextField.dart';
 import 'package:trade_ganit/Common/CommonValue.dart';
+import 'package:trade_ganit/FirstNomineeDetail.dart';
+import 'package:trade_ganit/FirstNomineeFromDetails.dart';
 import 'package:trade_ganit/OtpVerify/OtpVerifyCode.dart';
 import 'package:http/http.dart' as http;
-import 'package:trade_ganit/PersonalDetails/personalDetails.dart';
+import 'package:trade_ganit/ProofOfIdentifyAndAddress.dart';
 import 'package:trade_ganit/TypeSelection/SelectionType.dart';
 
 void main() {
@@ -55,22 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Container(
         alignment: Alignment.center,
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Form(
           key: _formKey,
           child: Column(
@@ -95,44 +86,24 @@ class _MyHomePageState extends State<MyHomePage> {
               CommonTextField(
                 controller: emailID,
                 label: "Enter email",
+                isEmail: true,
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      sendOTP(emailID.text);
+                        sendOTP(emailID.text);
                     }
                   },
                   style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
-                  child: Text('Next'),
+                  child: const Text('Send OTP'),
                 ),
               ),
             ],
           ),
-        )
-        // SingleChildScrollView(
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     children: <Widget>[
-        //
-        //
-        //       // const Text(
-        //       //   'You have pushed the button this many times:',
-        //       // ),
-        //       // Text(
-        //       //   '$_counter',
-        //       //   style: Theme.of(context).textTheme.headlineMedium,
-        //       // ),
-        //     ],
-        //   ),
-        // ),
+        ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 

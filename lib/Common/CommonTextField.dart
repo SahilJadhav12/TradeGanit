@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CommonTextField extends StatelessWidget {
 
@@ -9,6 +12,10 @@ class CommonTextField extends StatelessWidget {
     this.imagePath,
     this.onTap,
     this.validator,
+    this.isEmail,
+    this.textInputType,
+    this.inputFormatters,
+    this.maxlength,
   }) : super(key: key);
 
   TextEditingController controller;
@@ -16,6 +23,10 @@ class CommonTextField extends StatelessWidget {
   String? imagePath;
   Function? onTap;
   Function? validator;
+  bool? isEmail=false;
+  TextInputType? textInputType;
+  int? inputFormatters;
+  int? maxlength;
 
 
 
@@ -34,7 +45,7 @@ class CommonTextField extends StatelessWidget {
             labelText: label ?? "TextField"
         ),
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: textInputType ?? TextInputType.text,
         controller: controller,
         onTap:() {
           if (onTap != null) {
@@ -44,6 +55,10 @@ class CommonTextField extends StatelessWidget {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter value';
+          }
+          RegExp email = RegExp(r'\S+@\S+\.\S+');
+          if(!email.hasMatch(value) && isEmail==true) {
+            return 'Please enter proper Email ID';
           }
           return null;
         },

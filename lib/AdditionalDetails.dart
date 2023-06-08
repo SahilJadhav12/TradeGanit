@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_ganit/Common/CommonTextField.dart';
+import 'package:trade_ganit/Common/CommonValue.dart';
+import 'package:trade_ganit/Common/ImagePath.dart';
+import 'package:http/http.dart' as http;
 
 class AdditionalDetails extends StatefulWidget {
   const AdditionalDetails({Key? key}) : super(key: key);
@@ -15,6 +21,7 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
   TextEditingController referenceMediumController=TextEditingController();
   TextEditingController referenceDescriptionController=TextEditingController();
   int activeStep = 4;
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,186 +30,288 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
       ),
       body: Container(
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: EasyStepper(
-                  activeStep: activeStep,
-                  lineLength: 70,
-                  lineSpace: 0,
-                  lineType: LineType.normal,
-                  defaultLineColor: Colors.white,
-                  finishedLineColor: Colors.blue,
-                  activeStepTextColor: Colors.black87,
-                  finishedStepTextColor: Colors.black87,
-                  internalPadding: 0,
-                  showLoadingAnimation: false,
-                  stepRadius: 8,
-                  showStepBorder: false,
-                  lineDotRadius: 1.5,
-                  steps: [
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 0 ? Colors.blue : Colors.white,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: EasyStepper(
+                    activeStep: activeStep,
+                    lineLength: 70,
+                    lineSpace: 0,
+                    lineType: LineType.normal,
+                    defaultLineColor: Colors.white,
+                    finishedLineColor: Colors.blue,
+                    activeStepTextColor: Colors.black87,
+                    finishedStepTextColor: Colors.black87,
+                    internalPadding: 0,
+                    showLoadingAnimation: false,
+                    stepRadius: 8,
+                    showStepBorder: false,
+                    lineDotRadius: 1.5,
+                    steps: [
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 0 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Personal',
                       ),
-                      title: 'Personal',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 1 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 1 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Bank',
+                        topTitle: true,
                       ),
-                      title: 'Bank',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 2 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 2 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Proof of Identity',
                       ),
-                      title: 'Proof of Identity',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 3 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 3 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Nominee',
+                        topTitle: true,
                       ),
-                      title: 'Nominee',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 4 ? Colors.blue : Colors.white,
+                      EasyStep(
+                        customStep: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 7,
+                            backgroundColor:
+                            activeStep >= 4 ? Colors.blue : Colors.white,
+                          ),
                         ),
+                        title: 'Additional',
                       ),
-                      title: 'Additional',
-                    ),
-                  ],
-                  onStepReached: (index) =>
-                      setState(() => activeStep = index),
+                    ],
+                    onStepReached: (index) =>
+                        setState(() => activeStep = index),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'UCC'),
-                  controller: UCCController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
+                CommonTextField(controller: UCCController,
+                label: 'UCC',
+                imagePath: ImagePath.addressPath,),
+                CommonTextField(controller: dpNumberController,
+                  label: 'DP Number',
+                  imagePath: ImagePath.addressPath,),
+                CommonTextField(controller: portfolioSizeController,
+                label: 'Portfolio Size',
+                imagePath: ImagePath.addressPath,),
+                CommonTextField(controller: referenceMediumController,
+                label: 'Reference Medium',
+                imagePath: ImagePath.cardPath,),
+                CommonTextField(controller: referenceDescriptionController,
+                  label: 'Reference Description',
+                  imagePath: ImagePath.cardPath,),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        submitUserInfo();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
+                    child: Text('Submit'),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'DP Number'),
-                  controller: dpNumberController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Portfolio Size'),
-                  controller: portfolioSizeController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Reference Medium'),
-                  controller: UCCController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Reference Description'),
-                  controller: referenceDescriptionController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    
-                  },
-                  style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
-                  child: Text('Submit'),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> submitUserInfo() async {
+    var url="https://pidone-backend-cloudrun-dev001-v3ieck43fa-el.a.run.app/pmsProduct/647f1c6a4759546c261be428";
+    var data={
+      "personalDetailsData":{
+        "fullNamePrefix": "Mr",
+        "fullName": CommonValue.fullName,
+        "motherNamePrefix": "Mrs",
+        "motherName": CommonValue.motherName,
+        "fatherNamePrefix": "Mr",
+        "fatherName": CommonValue.fatherName,
+        "email": CommonValue.emailId,
+        "mobileNumber": CommonValue.mobileNumber,
+        "dateOfBirth": CommonValue.dateOfBirth,
+        "gender": CommonValue.gender,
+        "alternateMobileNumber": CommonValue.mobileNumber,
+        "category": CommonValue.category,
+        "aadharNumber": CommonValue.adhaarNumber,
+        "pancardNumber": CommonValue.panNumber,
+        "aadharImage": {
+          "frontImage": {
+            "data": CommonValue.adhaarFrontBase64,
+            "contentType": "image/jpeg"
+          },
+          "backImage": {
+            "data": CommonValue.adhaarBackBase64,
+            "contentType": "image/jpeg"
+          }
+        },
+        "pancardImage": {
+          "data": CommonValue.panFrontBase64,
+          "contentType": "image/jpeg"
+        },
+        "photo": {
+          "data": CommonValue.photoBase64,
+          "contentType": "image/jpeg"
+        },
+        "passportImage": {
+          "frontImage": {
+            "data": CommonValue.passportFrontBase64,
+            "contentType": "image/jpeg"
+          },
+          "backImage": {
+            "data": CommonValue.passportBackBase64,
+            "contentType": "image/jpeg"
+          }
+        }
+      },
+      "currentAddressData":{
+        "curaddresss": {
+          "flatHouseNoBlockNo": "Flat 123",
+          "apartmentRoadArea": "XYZ Apartments",
+          "CityTownVillage": CommonValue.city,
+          "district": "District",
+          "pinCode": CommonValue.pincode,
+          "state": CommonValue.state,
+          "country": "India",
+          "addressProofFiles": {
+            "data": CommonValue.adhaarBackBase64,
+            "contentType": "image/png"
+          }
+        }
+      },
+      "permanentAddressData":{
+        "peraddresss": {
+          "flatHouseNoBlockNo": "Flat 456",
+          "apartmentRoadArea": "ABC Apartments",
+          "CityTownVillage": CommonValue.city,
+          "district": "District",
+          "pinCode": CommonValue.pincode,
+          "state": CommonValue.state,
+          "country": "India",
+          "addressProofFiles": {
+            "data": CommonValue.adhaarBackBase64,
+            "contentType": "image/jpeg"
+          }
+        }
+      },
+      "bankingDetailsData":{
+        "accountName":CommonValue.accountName,
+        "accountNumber":CommonValue.accountNumber,
+        "bankName": CommonValue.bankName,
+        "ifscCode": CommonValue.ifscCode,
+        "accountType": CommonValue.accountType
+      },
+      "additionalDetailsData":{
+        "ucc": UCCController.text,
+        "dpNumber": dpNumberController.text,
+        "portfolioSize": int. parse(portfolioSizeController.text),
+        "referenceMedium": referenceMediumController.text,
+        "referenceDescription": referenceDescriptionController.text,
+      },
+      "nomineesData":{
+        "nomineesfullNamePrefix": "Mr",
+        "nomineesfullName": CommonValue.fullNameNominee,
+        "nomineesmotherNamePrefix": "Mrs",
+        "nomineesmotherName": CommonValue.motherNameNominee,
+        "nomineesfatherNamePrefix": "Mr",
+        "nomineesfatherName": CommonValue.fatherNameNominee,
+        "nomineesemail": CommonValue.emailIdNominee,
+        "nomineesmobileNumber": CommonValue.mobileNumberNominee,
+        "nomineesdateOfBirth": CommonValue.dateOfBirthNominee,
+        "nomineesgender": CommonValue.genderNominee,
+        "nomineesalternateMobileNumber": CommonValue.mobileNumberNominee,
+        "nomineescategory": CommonValue.categoryNominee,
+        "nomineesaadharNumber": CommonValue.adhaarNumberNominee,
+        "nomineespancardNumber": CommonValue.panNumberNominee,
+        "nomineesaadharImage": {
+          "nomineesAaddharfrontImage": {
+            "data": CommonValue.adhaarFrontBase64Nominee,
+            "contentType": "image/jpeg"
+          },
+          "nomineesAadharbackImage": {
+            "data": CommonValue.adhaarBackBase64Nominee,
+            "contentType": "image/jpeg"
+          }
+        },
+        "nomineespancardImage": {
+          "data": CommonValue.panFrontBase64Nominee,
+          "contentType": "image/jpeg"
+        },
+        "nomineesphoto": {
+          "data": CommonValue.photoBase64Nominee,
+          "contentType": "image/jpeg"
+        },
+        "nomineespassportImage": {
+          "nomineesPassportfrontImage": {
+            "data": CommonValue.passportFrontBase64Nominee,
+            "contentType": "image/jpeg"
+          },
+          "nomineesPassportbackImage": {
+            "data": CommonValue.passportBackBase64Nominee,
+            "contentType": "image/jpeg"
+          }
+        },
+        "nomineesrelationship": "Spouse"
+      }
+    };
+    var bodyy=json.encode(data);
+    var urlParse=Uri.parse(url);
+    http.Response response=await http.post(
+        urlParse,
+        body: bodyy,
+        headers: {
+          "Content-Type":"application/json",
+        }
+    );
+    var dataa=jsonDecode(response.body);
+    if(response.statusCode==200)
+    {
+
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(dataa['message'])),
+      );
+    }
+    print(dataa);
+
+    // Navigator.of(context).pop();
+
   }
 }

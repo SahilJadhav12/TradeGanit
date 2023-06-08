@@ -7,6 +7,10 @@ import 'package:trade_ganit/BankDetail/BankDetail.dart';
 import 'package:trade_ganit/CustomText.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 
+import 'Common/CommonTextField.dart';
+import 'Common/CommonValue.dart';
+import 'Common/ImagePath.dart';
+
 class FirstNomineeFormDetail extends StatefulWidget {
   const FirstNomineeFormDetail({Key? key}) : super(key: key);
 
@@ -34,6 +38,7 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
   TextEditingController panNumberTextInputController=TextEditingController();
   DateTime now3 = DateTime.now();
   String formattedDate3 = "";
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     fullNameTextInput.text=CustomTexts.userName;
@@ -52,7 +57,8 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
         title: const Text('First Nominee Details'),
       ),
       body: SingleChildScrollView(
-        child: Center(
+        child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               Container(
@@ -139,56 +145,17 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                       setState(() => activeStep = index),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ImageIcon(AssetImage('images/profile.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Full Name(Same as ID proof)'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: fullNameTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
+              CommonTextField(
+                controller: fullNameTextInput,
+                label: "Full Name (Same as ID proof)",
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ImageIcon(AssetImage('images/profile.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Father Name/Spouse Name'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: fatherNameTextInputController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
+              CommonTextField(
+                controller: fatherNameTextInputController,
+                label: "Father Name/Spouse Name",
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ImageIcon(AssetImage('images/profile.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Mother Name'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: motherNameTextInputController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
+              CommonTextField(
+                controller: motherNameTextInputController,
+                label: "Mother Name",
               ),
               Container(
                 padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -203,6 +170,12 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                   keyboardType: TextInputType.emailAddress,
                   controller: dateOfBirthController,
                   readOnly: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter value';
+                    }
+                    return null;
+                  },
                   onTap: () {
                     _dateBirth();
                   },
@@ -241,7 +214,6 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                         ],
                         listTextStyle: const TextStyle(color: Colors.black),
                         dropDownItemCount: 3,
-
                         onChanged: (val) {
                         },
                       ),
@@ -287,170 +259,46 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ImageIcon(AssetImage('images/email.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Email Id'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailIdController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
+              CommonTextField(
+                controller: emailIdController,
+                label: "Email Id",
+                imagePath: ImagePath.emailPath,
+                isEmail: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                onTap: (){
+                  setState(() {
+                    print("qwert");
+                  });
+                },
+              ),
+              CommonTextField(
+                controller: mobileNumberController,
+                label: "Mobile Number",
+                imagePath: ImagePath.phonePath,
+                maxlength: 10,
+                textInputType: TextInputType.number,
+              ),
+              CommonTextField(controller: adharNumberTextInput,
+                label: "Adhaar Number",
+                imagePath: ImagePath.cardPath,
+                maxlength: 12,
+                textInputType: TextInputType.number,
+              ),
+              CommonTextField(controller: panNumberTextInputController,
+                label: "Pan Number",
+                imagePath: ImagePath.cardPath,
+                textInputType: TextInputType.number,
               ),
               Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/phone.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Mobile Number'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: mobileNumberController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/phone.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Alternate Mobile Number'),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: alternateMobileNumberController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Address'),
-                  controller: addressTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              //TODO:If require in future.
-              // Container(
-              //   padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
-              //   child: TextFormField(
-              //     decoration: InputDecoration(labelText: 'Landmark'),
-              //     controller: landmarkTextInputController,
-              //     onFieldSubmitted: (value) {
-              //       setState(() {
-              //       });
-              //     },
-              //   ),
-              // ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'City'),
-                  controller: cityTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'State'),
-                  controller: stateTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/address.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Pincode'),
-                  controller: pincodeTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/panNumber.png'),),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'Adhaar Number'),
-                  controller: adharNumberTextInput,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ImageIcon(AssetImage('images/panNumber.png')),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: 'PAN Number'),
-                  controller: panNumberTextInputController,
-                  onFieldSubmitted: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     Container(
                       padding: EdgeInsets.all(10),
                       child: ElevatedButton(
@@ -463,17 +311,48 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                       ),
                     ),
                     Container(
-                    padding: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _navigateToFirstNomineeFormDetail();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(130, 50)),
-                      child: Text('Next'),
+                      padding: EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if(genderController.dropDownValue==null)
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Please select value of gender")),
+                            );
+                          }
+                          else if(categoryController.dropDownValue==null)
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Please select Category")),
+                            );
+                          }
+                          else if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            CommonValue.fullNameNominee=fullNameTextInput.text;
+                            CommonValue.fatherNameNominee=fatherNameTextInputController.text;
+                            CommonValue.motherNameNominee=motherNameTextInputController.text;
+                            CommonValue.dateOfBirthNominee=dateOfBirthController.text;
+                            CommonValue.genderNominee=genderController.dropDownValue!.value.toString();
+                            CommonValue.categoryNominee=categoryController.dropDownValue!.value.toString();
+                            CommonValue.emailIdNominee=emailIdController.text;
+                            CommonValue.mobileNumberNominee=mobileNumberController.text;
+                            // CommonValue.address=addressTextInput.text;
+                            // CommonValue.city=cityTextInput.text;
+                            // CommonValue.state=stateTextInput.text;
+                            // CommonValue.pincode=pincodeTextInput.text;
+                            CommonValue.adhaarNumberNominee=adharNumberTextInput.text;
+                            CommonValue.panNumberNominee=panNumberTextInputController.text;
+                            _navigateToFirstNomineeFormDetail();
+                          }
+                          //_navigateToPersonalFormDetail();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(130, 50)),
+                        child: Text('Next'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
                 ),
               ),
             ],
