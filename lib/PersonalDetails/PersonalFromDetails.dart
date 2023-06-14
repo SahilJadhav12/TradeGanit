@@ -1,4 +1,3 @@
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:trade_ganit/BankDetail/BankDetail.dart';
@@ -9,6 +8,11 @@ import 'package:trade_ganit/CustomText.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/src/material/date_picker.dart';
+import 'package:trade_ganit/PersonalDetails/personalDetails.dart';
+
+import '../AdditionalDetails.dart';
+import '../Common/dropdown.dart';
+import '../ProofOfIdentifyAndAddress.dart';
 
 class PersonalFormDetail extends StatefulWidget {
   const PersonalFormDetail({Key? key}) : super(key: key);
@@ -40,6 +44,7 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
 
   final _formKey = GlobalKey<FormState>();
   int activeStep = 0;
+  String categoryValue="AYAN";
 
   @override
   void initState() {
@@ -50,6 +55,19 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
     pincodeTextInput.text = CustomTexts.pincode;
     adharNumberTextInput.text = CustomTexts.adharNum;
     panNumberTextInputController.text = CustomTexts.panNum;
+    // genderController.dropDownValue!.value=CustomTexts.gender;
+
+
+
+
+    fullNameTextInput.text = CommonValue.fullName;
+    fatherNameTextInputController.text=CommonValue.fatherName;
+    motherNameTextInputController.text=CommonValue.motherName;
+    dateOfBirthController.text=CommonValue.dateOfBirth;
+    emailIdController.text=CommonValue.emailId;
+    mobileNumberController.text=CommonValue.mobileNumber;
+    adharNumberTextInput.text = CommonValue.adhaarNumber;
+    panNumberTextInputController.text = CommonValue.panNumber;
     super.initState();
   }
 
@@ -193,8 +211,22 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                   children: [
                     Expanded(
                       child:
-                      Text('Gender',),
+                      InkWell(
+                          onTap:(){
+                            setState(() {
+                              CommonValue.gender="";
+                            });
+                          },
+                          child: Text('Gender',)),
                     ),
+                    CommonValue.gender!="" ?
+                    Expanded(child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            CommonValue.gender="";
+                          });
+                        },
+                        child: Text(CommonValue.gender)),) :
                     Expanded(
                       child: DropDownTextField(
                         // initialValue: "name4",
@@ -210,7 +242,7 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                             return null;
                           }
                         },
-                        dropDownList: const [
+                        dropDownList: [
                           DropDownValueModel(name: 'Male', value: "Male"),
                           DropDownValueModel(name: 'Female', value: "Female"),
                           DropDownValueModel(name: 'Other', value: "Other"),
@@ -232,6 +264,14 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                       child:
                       Text('Category',),
                     ),
+                    CommonValue.category!="" ?
+                    Expanded(child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            CommonValue.category="";
+                          });
+                        },
+                        child: Text(CommonValue.category)),) :
                     Expanded(
                       child: DropDownTextField(
                         // initialValue: "name4",
@@ -247,10 +287,12 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                             return null;
                           }
                         },
-                        dropDownList: const [
-                          DropDownValueModel(name: 'Option1', value: "Option1"),
-                          DropDownValueModel(name: 'Option2', value: "Option2"),
-                          DropDownValueModel(name: 'Option3', value: "Option3"),
+                        dropDownList: [
+                          DropDownValueModel(name: 'AYAN', value: "AYAN"),
+                          DropDownValueModel(name: 'NRI', value: "NRI"),
+                          DropDownValueModel(name: 'NRE', value: "NRE"),
+                          DropDownValueModel(name: 'NRO', value: "NRO"),
+                          DropDownValueModel(name: 'HUF', value: "HUF"),
                         ],
                         listTextStyle: const TextStyle(color: Colors.black),
                         dropDownItemCount: 3,
@@ -317,13 +359,13 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                       padding: EdgeInsets.all(10),
                       child: ElevatedButton(
                         onPressed: () {
-                          if(genderController.dropDownValue==null)
+                          if(genderController.dropDownValue==null && CommonValue.gender=="")
                             {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text("Please select value of gender")),
                               );
                             }
-                          else if(categoryController.dropDownValue==null)
+                          else if(categoryController.dropDownValue==null && CommonValue.category=="")
                           {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Please select Category")),
@@ -336,8 +378,24 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                             CommonValue.fatherName=fatherNameTextInputController.text;
                             CommonValue.motherName=motherNameTextInputController.text;
                             CommonValue.dateOfBirth=dateOfBirthController.text;
-                            CommonValue.gender=genderController.dropDownValue!.value.toString();
-                            CommonValue.category=categoryController.dropDownValue!.value.toString();
+                            if(genderController.dropDownValue==null) {
+
+                            }
+                            else {
+                              CommonValue.gender =
+                                  genderController.dropDownValue!.value
+                                      .toString();
+                            }
+
+                            if(categoryController.dropDownValue==null)
+                              {
+
+                              }
+                            else {
+                              CommonValue.category =
+                                  categoryController.dropDownValue!.value
+                                      .toString();
+                            }
                             CommonValue.emailId=emailIdController.text;
                             CommonValue.mobileNumber=mobileNumberController.text;
                             // CommonValue.address=addressTextInput.text;
@@ -346,7 +404,28 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
                             // CommonValue.pincode=pincodeTextInput.text;
                             CommonValue.adhaarNumber=adharNumberTextInput.text;
                             CommonValue.panNumber=panNumberTextInputController.text;
-                            _navigateToPersonalFormDetail();
+                            if(CommonValue.bankingDetailsNavigate==true)
+                            {
+                              _navigateToBankingDetail();
+                            }
+                            else if(CommonValue.addressDetailsNavigate==true)
+                            {
+                              _navigateToAddressDetail();
+                            }
+                            else if(CommonValue.nomineeDetailsNavigate==true)
+                            {
+                              _navigateToNominee();
+                            }
+                            else if(CommonValue.addressDetailsNavigate==true)
+                            {
+                              _navigateToAdditional();
+                            }
+                            else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text(
+                                    "User Information already fill up")),
+                              );
+                            }
                           }
                           //_navigateToPersonalFormDetail();
                         },
@@ -365,10 +444,32 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
     );
   }
 
-  void _navigateToPersonalFormDetail() {
+  void _navigateToBankingDetail() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const BankDetail(),
+        builder: (context) => BankDetail(),
+      ),
+    );
+  }
+  void _navigateToAddressDetail() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProofOfIdentifyAndAddress(),
+      ),
+    );
+  }
+  void _navigateToNominee() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FirstNomineeDetail(),
+      ),
+    );
+  }
+
+  void _navigateToAdditional() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AdditionalDetails(),
       ),
     );
   }
@@ -387,4 +488,5 @@ class _PersonalFormDetailState extends State<PersonalFormDetail> {
       })
     });
   }
+
 }

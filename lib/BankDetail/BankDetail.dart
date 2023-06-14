@@ -5,6 +5,7 @@ import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 import 'package:trade_ganit/ProofOfIdentifyAndAddress.dart';
 
+import '../AdditionalDetails.dart';
 import '../Common/ImagePath.dart';
 
 
@@ -23,6 +24,18 @@ class _BankDetailState extends State<BankDetail> {
   TextEditingController accountTypeController=TextEditingController();
   int activeStep=1;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    accountNameController.text=CommonValue.accountName;
+    accountNumberController.text=CommonValue.accountNumber;
+    bankNameController.text=CommonValue.bankName;
+    ifscCodeController.text=CommonValue.ifscCode;
+    accountTypeController.text=CommonValue.accountType;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +176,25 @@ class _BankDetailState extends State<BankDetail> {
                             CommonValue.bankName=bankNameController.text;
                             CommonValue.ifscCode=ifscCodeController.text;
                             CommonValue.accountType=accountTypeController.text;
-                            _navigateToPersonalFormDetail();
+                            if(CommonValue.addressDetailsNavigate==true)
+                            {
+                              _navigateToAddressDetail();
+                            }
+                            else if(CommonValue.nomineeDetailsNavigate==true)
+                            {
+                              _navigateToNominee();
+                            }
+                            else if(CommonValue.addressDetailsNavigate==true)
+                            {
+                              CommonValue.addressDetailsNavigate=false;
+                              _navigateToAdditional();
+                            }
+                            else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text(
+                                    "User Information already fill up")),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(fixedSize: const Size(130, 50)),
@@ -180,10 +211,25 @@ class _BankDetailState extends State<BankDetail> {
     );
   }
 
-  void _navigateToPersonalFormDetail() {
+  void _navigateToAddressDetail() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const ProofOfIdentifyAndAddress(),
+        builder: (context) => ProofOfIdentifyAndAddress(),
+      ),
+    );
+  }
+  void _navigateToNominee() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FirstNomineeDetail(),
+      ),
+    );
+  }
+
+  void _navigateToAdditional() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AdditionalDetails(),
       ),
     );
   }

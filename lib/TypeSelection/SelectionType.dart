@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_ganit/AdditionalDetails.dart';
+import 'package:trade_ganit/BankDetail/BankDetail.dart';
+import 'package:trade_ganit/Common/CommonValue.dart';
+import 'package:trade_ganit/FirstNomineeDetail.dart';
+import 'package:trade_ganit/ProofOfIdentifyAndAddress.dart';
 
 import '../PersonalDetails/personalDetails.dart';
+import 'package:http/http.dart' as http;
 
 
 class SelectionType extends StatefulWidget {
@@ -26,7 +34,36 @@ class _SelectionTypeState extends State<SelectionType> {
   void _navigateToPersonalDetail() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const PersonalDetail(),
+        builder: (context) => PersonalDetail(),
+      ),
+    );
+  }
+  void _navigateToBankingDetail() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BankDetail(),
+      ),
+    );
+  }
+  void _navigateToAddressDetail() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProofOfIdentifyAndAddress(),
+      ),
+    );
+  }
+  void _navigateToNominee() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FirstNomineeDetail(),
+      ),
+    );
+  }
+
+  void _navigateToAdditional() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AdditionalDetails(),
       ),
     );
   }
@@ -35,6 +72,7 @@ class _SelectionTypeState extends State<SelectionType> {
   void initState() {
     // TODO: implement initState
     // selectCategoryController.dropDownValue!.value.toString()=="";
+    getUserSubmitInfo();
     super.initState();
   }
   @override
@@ -192,7 +230,32 @@ class _SelectionTypeState extends State<SelectionType> {
                   //     );
                   //   }
                   // else{
-                    _navigateToPersonalDetail();
+                  if(CommonValue.personalDetailsNavigate==true)
+                    {
+                      _navigateToPersonalDetail();
+                    }
+                  else if(CommonValue.bankingDetailsNavigate==true)
+                    {
+                      _navigateToBankingDetail();
+                    }
+                  else if(CommonValue.addressDetailsNavigate==true)
+                    {
+                      _navigateToAddressDetail();
+                    }
+                  else if(CommonValue.nomineeDetailsNavigate==true)
+                    {
+                      _navigateToNominee();
+                    }
+                  else if(CommonValue.addressDetailsNavigate==true)
+                    {
+                      _navigateToAdditional();
+                    }
+                  else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("User Information already fill up")),
+                    );
+                  }
+
                   // }
                 },
                 style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
@@ -211,5 +274,95 @@ class _SelectionTypeState extends State<SelectionType> {
         ),
       ),
     );
+  }
+
+
+  Future<void> getUserSubmitInfo() async {
+    var url="https://pidone-backend-cloudrun-dev001-v3ieck43fa-el.a.run.app/getoneuser/6486ba6591b64d98a0c77b5f";
+    var urlParse=Uri.parse(url);
+    http.Response response=await http.get(
+        urlParse,
+        headers: {
+          "Content-Type":"application/json",
+        }
+    );
+    var dataa=jsonDecode(response.body);
+    if(response.statusCode==200)
+    {
+
+      if(dataa['personalDetails']==null)
+        {
+          // CommonValue.personalDetailsNavigate=true;
+        }
+      else{
+        CommonValue.fullName=dataa['personalDetails']['fullName'];
+        CommonValue.motherName=dataa['personalDetails']['motherName'];
+        CommonValue.fatherName=dataa['personalDetails']['fatherName'];
+        CommonValue.emailId=dataa['personalDetails']['email'];
+        CommonValue.mobileNumber=dataa['personalDetails']['mobileNumber'];
+        CommonValue.dateOfBirth=dataa['personalDetails']['dateOfBirth'];
+        CommonValue.gender=dataa['personalDetails']['gender'];
+        CommonValue.category=dataa['personalDetails']['category'][0];
+        CommonValue.adhaarNumber=dataa['personalDetails']['aadharNumber'];
+        CommonValue.panNumber=dataa['personalDetails']['pancardNumber'];
+      }
+      if(dataa['bankingDetails']==null)
+      {
+        // CommonValue.bankingDetailsNavigate=true;
+      }
+      else{
+        CommonValue.accountName=dataa['bankingDetails']['accountName'];
+        CommonValue.accountNumber=dataa['bankingDetails']['accountNumber'];
+        CommonValue.bankName=dataa['bankingDetails']['bankName'];
+        CommonValue.ifscCode=dataa['bankingDetails']['ifscCode'];
+        CommonValue.accountType=dataa['bankingDetails']['accountType'];
+      }
+      if(dataa['currentAddress']==null)
+      {
+        // CommonValue.addressDetailsNavigate=true;
+      }
+      else{
+        CommonValue.city=dataa['currentAddress']['curaddresss']['CityTownVillage'];
+        CommonValue.state=dataa['currentAddress']['curaddresss']['state'];
+        CommonValue.pincode=dataa['currentAddress']['curaddresss']['pinCode'];
+      }
+      if(dataa['nominees']==null)
+      {
+        // CommonValue.nomineeDetailsNavigate=true;
+      }
+      else{
+        CommonValue.fullNameNominee=dataa['nominees']['nomineesfullName'];
+        CommonValue.motherNameNominee=dataa['nominees']['nomineesmotherName'];
+        CommonValue.fatherNameNominee=dataa['nominees']['nomineesfatherName'];
+        CommonValue.emailIdNominee=dataa['nominees']['nomineesemail'];
+        CommonValue.mobileNumberNominee=dataa['nominees']['nomineesmobileNumber'];
+        CommonValue.dateOfBirthNominee=dataa['nominees']['nomineesdateOfBirth'];
+        CommonValue.genderNominee=dataa['nominees']['nomineesgender'];
+        CommonValue.categoryNominee=dataa['nominees']['nomineescategory'][0];
+        CommonValue.adhaarNumberNominee=dataa['nominees']['nomineesaadharNumber'];
+        CommonValue.panNumberNominee=dataa['nominees']['nomineespancardNumber'];
+      }
+      if(dataa['additionalDetails']==null)
+      {
+        // CommonValue.additionalDetailsNavigate=true;
+      }
+      else{
+        CommonValue.ucc=dataa['additionalDetails']['ucc'];
+        CommonValue.dpNumber=dataa['additionalDetails']['dpNumber'];
+        CommonValue.portfolioSize=(dataa['additionalDetails']['portfolioSize']).toString();
+        CommonValue.referenceMedium=dataa['additionalDetails']['referenceMedium'];
+        CommonValue.referenceDescription=dataa['additionalDetails']['referenceDescription'];
+      }
+
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(dataa['message'])),
+      );
+    }
+    print(dataa);
+
+    // Navigator.of(context).pop();
+
   }
 }

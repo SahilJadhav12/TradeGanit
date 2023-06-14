@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 
+import 'AdditionalDetails.dart';
 import 'Common/CommonTextField.dart';
 import 'Common/ImagePath.dart';
 import 'CustomText.dart';
@@ -19,6 +20,14 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
   TextEditingController cityTextInput = TextEditingController();
   TextEditingController stateTextInput = TextEditingController();
   TextEditingController pincodeTextInput = TextEditingController();
+
+  TextEditingController addressTextInputPermanent = TextEditingController();
+  TextEditingController cityTextInputPermanent = TextEditingController();
+  TextEditingController stateTextInputPermanent = TextEditingController();
+  TextEditingController pincodeTextInputPermanent = TextEditingController();
+  bool checkboxisCheck = false;
+  bool checkForPermanent = true;
+
   final _formKey = GlobalKey<FormState>();
   int activeStep = 2;
   @override
@@ -27,6 +36,11 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
     cityTextInput.text = CustomTexts.city;
     stateTextInput.text = CustomTexts.state;
     pincodeTextInput.text = CustomTexts.pincode;
+
+    addressTextInput.text = CommonValue.address;
+    cityTextInput.text = CommonValue.city;
+    stateTextInput.text = CommonValue.state;
+    pincodeTextInput.text = CommonValue.pincode;
 
     super.initState();
   }
@@ -144,6 +158,63 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
                   imagePath: ImagePath.addressPath,
                   textInputType: TextInputType.number,
                 ),
+
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  child: Row(
+                    children: [
+                        Checkbox(
+                        tristate: false,
+                        activeColor:  Colors.black,
+                        checkColor: Colors.white,
+                        value: checkboxisCheck,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            checkboxisCheck = !checkboxisCheck;
+                            checkForPermanent=!checkForPermanent;
+                            addressTextInputPermanent.text=addressTextInput.text;
+                            cityTextInputPermanent.text=cityTextInput.text;
+                            stateTextInputPermanent.text=stateTextInput.text;
+                            pincodeTextInputPermanent.text=pincodeTextInput.text;
+                          });
+                        },
+                      ),
+                      Text("Is Current address same as permanent addres"),
+                    ],
+                  ),
+                ),
+
+                Visibility(
+                  visible: checkForPermanent,
+                  child: CommonTextField(
+                    controller: addressTextInputPermanent,
+                    label: "Address",
+                    imagePath: ImagePath.addressPath,
+                  ),
+                ),
+                Visibility(
+                  visible: checkForPermanent,
+                  child: CommonTextField(controller: cityTextInputPermanent,
+                    label: "City",
+                    imagePath: ImagePath.addressPath,
+                  ),
+                ),
+                Visibility(
+                  visible: checkForPermanent,
+                  child: CommonTextField(controller: stateTextInputPermanent,
+                    label: "State",
+                    imagePath: ImagePath.addressPath,
+                  ),
+                ),
+                Visibility(
+                  visible: checkForPermanent,
+                  child: CommonTextField(controller: pincodeTextInputPermanent,
+                    label: "pin code",
+                    imagePath: ImagePath.addressPath,
+                    textInputType: TextInputType.number,
+                  ),
+                ),
+
                 Container(
                   padding: EdgeInsets.all(10),
                   child: Row(
@@ -168,8 +239,21 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
                               CommonValue.address=addressTextInput.text;
                               CommonValue.city=cityTextInput.text;
                               CommonValue.state=stateTextInput.text;
-                              CommonValue.pincode==pincodeTextInput.text;
-                              _navigateToPersonalFormDetail();
+                              CommonValue.pincode=pincodeTextInput.text;
+                              if(CommonValue.nomineeDetailsNavigate==true)
+                              {
+                                _navigateToNominee();
+                              }
+                              else if(CommonValue.addressDetailsNavigate==true)
+                              {
+                                _navigateToAdditional();
+                              }
+                              else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text(
+                                      "User Information already fill up")),
+                                );
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -187,10 +271,19 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
       ),
     );
   }
-  void _navigateToPersonalFormDetail() {
+
+  void _navigateToNominee() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const FirstNomineeDetail(),
+        builder: (context) => FirstNomineeDetail(),
+      ),
+    );
+  }
+
+  void _navigateToAdditional() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AdditionalDetails(),
       ),
     );
   }

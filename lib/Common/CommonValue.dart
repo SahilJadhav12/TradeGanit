@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class CommonValue{
   static String email = "";
 
 //Personal Detail Image
-  static String adhaarFrontBase64 ="";
-  static String adhaarBackBase64="";
-  static String panFrontBase64="";
-  static String photoBase64="";
-  static String passportFrontBase64="";
-  static String passportBackBase64="";
+  static File? adhaarFrontBase64;
+  static File? adhaarBackBase64;
+  static File? panFrontBase64;
+  static File? photoBase64;
+  static File? passportFrontBase64;
+  static File? passportBackBase64;
 
 // Personal Detail Fields
 static String fullName="";
@@ -36,12 +38,12 @@ static String accountType="";
 
 //Nominee Detail Image
 //Personal Detail Image
-  static String adhaarFrontBase64Nominee ="";
-  static String adhaarBackBase64Nominee="";
-  static String panFrontBase64Nominee="";
-  static String photoBase64Nominee="";
-  static String passportFrontBase64Nominee="";
-  static String passportBackBase64Nominee="";
+  static File? adhaarFrontBase64Nominee;
+  static File? adhaarBackBase64Nominee;
+  static File? panFrontBase64Nominee;
+  static File? photoBase64Nominee;
+  static File? passportFrontBase64Nominee;
+  static File? passportBackBase64Nominee;
 
 // Personal Detail Fields
   static String fullNameNominee="";
@@ -59,6 +61,20 @@ static String accountType="";
   static String adhaarNumberNominee="";
   static String panNumberNominee="";
 
+  //
+  static bool personalDetailsNavigate=true;
+  static bool bankingDetailsNavigate=true;
+  static bool addressDetailsNavigate=true;
+  static bool nomineeDetailsNavigate=true;
+  static bool additionalDetailsNavigate=true;
+
+
+  //UCC details
+  static String ucc="";
+  static String dpNumber="";
+  static String portfolioSize="";
+  static String referenceMedium="";
+  static String referenceDescription="";
 
 
 

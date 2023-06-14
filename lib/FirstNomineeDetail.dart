@@ -360,12 +360,13 @@ class _FirstNomineeDetailState extends State<FirstNomineeDetail> {
                                 print(adharFront6);
 
                                 //Saving Image value in base64
-                                CommonValue.adhaarFrontBase64Nominee=adharFront.toString();
-                                CommonValue.adhaarBackBase64Nominee=adharBack.toString();
-                                CommonValue.panFrontBase64Nominee=panFront.toString();
-                                CommonValue.photoBase64Nominee=photo.toString();
-                                CommonValue.passportFrontBase64Nominee=adharFront5.toString();
-                                CommonValue.passportBackBase64Nominee=adharFront6.toString();
+                                CommonValue.adhaarFrontBase64Nominee=file;
+                                CommonValue.adhaarBackBase64Nominee=file2;
+                                CommonValue.panFrontBase64Nominee=file3;
+                                CommonValue.photoBase64Nominee=file4;
+                                CommonValue.passportFrontBase64Nominee=file5;
+                                CommonValue.passportBackBase64Nominee=file6;
+
 
 
                                 _navigateToFirstNomineeFormDetail();
@@ -538,5 +539,13 @@ class _FirstNomineeDetailState extends State<FirstNomineeDetail> {
     }
     // textScanning = false;
     setState(() {});
+  }
+
+  void _navigateToAdditional() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AdditionalDetails(),
+      ),
+    );
   }
 }

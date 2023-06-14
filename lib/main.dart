@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SelectionType(),
+      // home: const ProofOfIdentifyAndAddress(),
+      home: const SelectionType(),
       // home: const MyHomePage(title: 'Trade Ganit'),
       debugShowCheckedModeBanner: false,
     );
@@ -60,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
+      body:
+      Container(
         alignment: Alignment.center,
         child: Form(
           key: _formKey,

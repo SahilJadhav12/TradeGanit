@@ -6,6 +6,7 @@ import 'package:trade_ganit/Common/CommonTextField.dart';
 import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/Common/ImagePath.dart';
 import 'package:http/http.dart' as http;
+import 'package:trade_ganit/TypeSelection/SelectionType.dart';
 
 class AdditionalDetails extends StatefulWidget {
   const AdditionalDetails({Key? key}) : super(key: key);
@@ -20,6 +21,18 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
   TextEditingController portfolioSizeController=TextEditingController();
   TextEditingController referenceMediumController=TextEditingController();
   TextEditingController referenceDescriptionController=TextEditingController();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    UCCController.text=CommonValue.ucc;
+    dpNumberController.text=CommonValue.dpNumber;
+    portfolioSizeController.text=CommonValue.portfolioSize;
+    referenceMediumController.text=CommonValue.referenceMedium;
+    referenceDescriptionController.text=CommonValue.referenceDescription;
+    super.initState();
+  }
   int activeStep = 4;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -133,6 +146,7 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
                 CommonTextField(controller: referenceDescriptionController,
                   label: 'Reference Description',
                   imagePath: ImagePath.cardPath,),
+
                 Container(
                   padding: EdgeInsets.all(20),
                   child: ElevatedButton(
@@ -154,7 +168,7 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
   }
 
   Future<void> submitUserInfo() async {
-    var url="https://pidone-backend-cloudrun-dev001-v3ieck43fa-el.a.run.app/pmsProduct/647f1c6a4759546c261be428";
+    var url="https://pidone-backend-cloudrun-dev001-v3ieck43fa-el.a.run.app/pmsProduct/6486ba6591b64d98a0c77b5f";
     var data={
       "personalDetailsData":{
         "fullNamePrefix": "Mr",
@@ -173,29 +187,29 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
         "pancardNumber": CommonValue.panNumber,
         "aadharImage": {
           "frontImage": {
-            "data": CommonValue.adhaarFrontBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           },
           "backImage": {
-            "data": CommonValue.adhaarBackBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           }
         },
         "pancardImage": {
-          "data": CommonValue.panFrontBase64,
+          "data": "base64-encoded-image-data",
           "contentType": "image/jpeg"
         },
         "photo": {
-          "data": CommonValue.photoBase64,
+          "data": "base64-encoded-image-data",
           "contentType": "image/jpeg"
         },
         "passportImage": {
           "frontImage": {
-            "data": CommonValue.passportFrontBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           },
           "backImage": {
-            "data": CommonValue.passportBackBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           }
         }
@@ -210,7 +224,7 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
           "state": CommonValue.state,
           "country": "India",
           "addressProofFiles": {
-            "data": CommonValue.adhaarBackBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/png"
           }
         }
@@ -225,7 +239,7 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
           "state": CommonValue.state,
           "country": "India",
           "addressProofFiles": {
-            "data": CommonValue.adhaarBackBase64,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           }
         }
@@ -261,29 +275,29 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
         "nomineespancardNumber": CommonValue.panNumberNominee,
         "nomineesaadharImage": {
           "nomineesAaddharfrontImage": {
-            "data": CommonValue.adhaarFrontBase64Nominee,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           },
           "nomineesAadharbackImage": {
-            "data": CommonValue.adhaarBackBase64Nominee,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           }
         },
         "nomineespancardImage": {
-          "data": CommonValue.panFrontBase64Nominee,
+          "data": "base64-encoded-image-data",
           "contentType": "image/jpeg"
         },
         "nomineesphoto": {
-          "data": CommonValue.photoBase64Nominee,
+          "data": "base64-encoded-image-data",
           "contentType": "image/jpeg"
         },
         "nomineespassportImage": {
           "nomineesPassportfrontImage": {
-            "data": CommonValue.passportFrontBase64Nominee,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           },
           "nomineesPassportbackImage": {
-            "data": CommonValue.passportBackBase64Nominee,
+            "data": "base64-encoded-image-data",
             "contentType": "image/jpeg"
           }
         },
@@ -302,16 +316,28 @@ class _AdditionalDetailsState extends State<AdditionalDetails> {
     var dataa=jsonDecode(response.body);
     if(response.statusCode==200)
     {
-
+      _toSelectType();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Your Information is successfully saved.")),
+      );
     }
     else{
+      _toSelectType();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(dataa['message'])),
+        SnackBar(content: Text(response.body)),
       );
     }
     print(dataa);
 
     // Navigator.of(context).pop();
 
+  }
+
+  void _toSelectType() {
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+      return SelectionType();
+    }), (r){
+      return false;
+    });
   }
 }

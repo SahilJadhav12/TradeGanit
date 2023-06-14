@@ -48,6 +48,17 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
     pincodeTextInput.text=CustomTexts.pincode;
     adharNumberTextInput.text=CustomTexts.adharNum;
     panNumberTextInputController.text=CustomTexts.panNum;
+
+
+    fullNameTextInput.text = CommonValue.fullNameNominee;
+    fatherNameTextInputController.text=CommonValue.fatherNameNominee;
+    motherNameTextInputController.text=CommonValue.motherNameNominee;
+    dateOfBirthController.text=CommonValue.dateOfBirthNominee;
+    emailIdController.text=CommonValue.emailIdNominee;
+    mobileNumberController.text=CommonValue.mobileNumberNominee;
+    adharNumberTextInput.text = CommonValue.adhaarNumberNominee;
+    panNumberTextInputController.text = CommonValue.panNumberNominee;
+
     super.initState();
   }
   @override
@@ -245,9 +256,11 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                           }
                         },
                         dropDownList: const [
-                          DropDownValueModel(name: 'Option1', value: "Option1"),
-                          DropDownValueModel(name: 'Option2', value: "Option2"),
-                          DropDownValueModel(name: 'Option3', value: "Option3"),
+                          DropDownValueModel(name: 'AYAN', value: "AYAN"),
+                          DropDownValueModel(name: 'NRI', value: "NRI"),
+                          DropDownValueModel(name: 'NRE', value: "NRE"),
+                          DropDownValueModel(name: 'NRO', value: "NRO"),
+                          DropDownValueModel(name: 'HUF', value: "HUF"),
                         ],
                         listTextStyle: const TextStyle(color: Colors.black),
                         dropDownItemCount: 3,
@@ -343,7 +356,16 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
                             // CommonValue.pincode=pincodeTextInput.text;
                             CommonValue.adhaarNumberNominee=adharNumberTextInput.text;
                             CommonValue.panNumberNominee=panNumberTextInputController.text;
-                            _navigateToFirstNomineeFormDetail();
+                            if(CommonValue.additionalDetailsNavigate==true)
+                            {
+                              _navigateToAdditional();
+                            }
+                            else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text(
+                                    "User Information already fill up")),
+                              );
+                            }
                           }
                           //_navigateToPersonalFormDetail();
                         },
@@ -361,10 +383,12 @@ class _FirstNomineeFormDetailState extends State<FirstNomineeFormDetail> {
       ),
     );
   }
-  void _navigateToFirstNomineeFormDetail() {
+
+
+  void _navigateToAdditional() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const AdditionalDetails(),
+        builder: (context) => AdditionalDetails(),
       ),
     );
   }
