@@ -6,6 +6,7 @@ import 'package:trade_ganit/FirstNomineeDetail.dart';
 import 'AdditionalDetails.dart';
 import 'Common/CommonTextField.dart';
 import 'Common/ImagePath.dart';
+import 'Common/widget/stepper.dart';
 import 'CustomText.dart';
 
 class ProofOfIdentifyAndAddress extends StatefulWidget {
@@ -56,90 +57,7 @@ class _ProofOfIdentifyAndAddressState extends State<ProofOfIdentifyAndAddress> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: EasyStepper(
-                    activeStep: activeStep,
-                    lineLength: 70,
-                    lineSpace: 0,
-                    lineType: LineType.normal,
-                    defaultLineColor: Colors.white,
-                    finishedLineColor: Colors.blue,
-                    activeStepTextColor: Colors.black87,
-                    finishedStepTextColor: Colors.black87,
-                    internalPadding: 0,
-                    showLoadingAnimation: false,
-                    stepRadius: 8,
-                    showStepBorder: false,
-                    lineDotRadius: 1.5,
-                    steps: [
-                      EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor:
-                            activeStep >= 0 ? Colors.blue : Colors.white,
-                          ),
-                        ),
-                        title: 'Personal',
-                      ),
-                      EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor:
-                            activeStep >= 1 ? Colors.blue : Colors.white,
-                          ),
-                        ),
-                        title: 'Bank',
-                        topTitle: true,
-                      ),
-                      EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor:
-                            activeStep >= 2 ? Colors.blue : Colors.white,
-                          ),
-                        ),
-                        title: 'Proof of Identity',
-                      ),
-                      EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor:
-                            activeStep >= 3 ? Colors.blue : Colors.white,
-                          ),
-                        ),
-                        title: 'Nominee',
-                        topTitle: true,
-                      ),
-                      EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor:
-                            activeStep >= 4 ? Colors.blue : Colors.white,
-                          ),
-                        ),
-                        title: 'Additional',
-                      ),
-                    ],
-                    onStepReached: (index) =>
-                        setState(() => activeStep = index),
-                  ),
-                ),
+                ActiveStep(activeStep: activeStep),
                 CommonTextField(
                   controller: addressTextInput,
                   label: "Address",

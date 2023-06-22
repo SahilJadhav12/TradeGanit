@@ -11,6 +11,8 @@ import 'package:trade_ganit/Common/CommonValue.dart';
 import 'package:trade_ganit/CustomText.dart';
 import 'package:trade_ganit/PersonalDetails/PersonalFromDetails.dart';
 
+import '../Common/widget/stepper.dart';
+
 class PersonalDetail extends StatefulWidget {
   const PersonalDetail({Key? key}) : super(key: key);
 
@@ -51,90 +53,7 @@ class _PersonalDetailState extends State<PersonalDetail> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
 
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: EasyStepper(
-                  activeStep: activeStep,
-                  lineLength: 70,
-                  lineSpace: 0,
-                  lineType: LineType.normal,
-                  defaultLineColor: Colors.white,
-                  finishedLineColor: Colors.blue,
-                  activeStepTextColor: Colors.black87,
-                  finishedStepTextColor: Colors.black87,
-                  internalPadding: 0,
-                  showLoadingAnimation: false,
-                  stepRadius: 8,
-                  showStepBorder: false,
-                  lineDotRadius: 1.5,
-                  steps: [
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 0 ? Colors.blue : Colors.white,
-                        ),
-                      ),
-                      title: 'Personal',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 1 ? Colors.blue : Colors.white,
-                        ),
-                      ),
-                      title: 'Bank',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 2 ? Colors.blue : Colors.white,
-                        ),
-                      ),
-                      title: 'Proof of Identity',
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 3 ? Colors.blue : Colors.white,
-                        ),
-                      ),
-                      title: 'Nominee',
-                      topTitle: true,
-                    ),
-                    EasyStep(
-                      customStep: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 7,
-                          backgroundColor:
-                          activeStep >= 4 ? Colors.blue : Colors.white,
-                        ),
-                      ),
-                      title: 'Additional',
-                    ),
-                  ],
-                  onStepReached: (index) =>
-                      setState(() => activeStep = index),
-                ),
-              ),
+              ActiveStep(activeStep: activeStep),
               SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -370,12 +289,20 @@ class _PersonalDetailState extends State<PersonalDetail> {
                                 // print(adharFront6);
 
                                 //Saving Image value in base64
-                                CommonValue.adhaarFrontBase64=file;
-                                CommonValue.adhaarBackBase64=file2;
-                                CommonValue.panFrontBase64=file3;
-                                // CommonValue.photoBase64=file4;
-                                // CommonValue.passportFrontBase64=file5;
-                                // CommonValue.passportBackBase64=file6;
+                                if(file!=null) {
+                                  CommonValue.adhaarFrontBase64 = file;
+                                }
+                                if(file2!=null)
+                                {CommonValue.adhaarBackBase64=file2;}
+                                if(file3!=null)
+                                  {
+                                CommonValue.panFrontBase64=file3;}
+                                // if(file4!=null){
+                                // CommonValue.photoBase64=file4;}
+                                // if(file5!=null){
+                                // CommonValue.passportFrontBase64=file5;}
+                                // if(file6!=null){
+                                // CommonValue.passportBackBase64=file6;}
 
 
                                 _navigateToPersonalFormDetail();

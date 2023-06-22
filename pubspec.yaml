@@ -39,6 +39,7 @@ dependencies:
   dropdown_textfield: ^1.0.8
   intl: ^0.18.1
   http:
+  url_launcher: ^6.1.11
 
 
   # The following adds the Cupertino Icons font to your application.

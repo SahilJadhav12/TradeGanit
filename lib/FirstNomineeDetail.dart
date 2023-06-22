@@ -11,6 +11,7 @@ import 'package:trade_ganit/AdditionalDetails.dart';
 import 'package:trade_ganit/CustomText.dart';
 
 import 'Common/CommonValue.dart';
+import 'Common/widget/stepper.dart';
 import 'FirstNomineeFromDetails.dart';
 
 class FirstNomineeDetail extends StatefulWidget {
@@ -41,90 +42,7 @@ class _FirstNomineeDetailState extends State<FirstNomineeDetail> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
 
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: EasyStepper(
-                activeStep: activeStep,
-                lineLength: 70,
-                lineSpace: 0,
-                lineType: LineType.normal,
-                defaultLineColor: Colors.white,
-                finishedLineColor: Colors.blue,
-                activeStepTextColor: Colors.black87,
-                finishedStepTextColor: Colors.black87,
-                internalPadding: 0,
-                showLoadingAnimation: false,
-                stepRadius: 8,
-                showStepBorder: false,
-                lineDotRadius: 1.5,
-                steps: [
-                  EasyStep(
-                    customStep: CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 7,
-                        backgroundColor:
-                        activeStep >= 0 ? Colors.blue : Colors.white,
-                      ),
-                    ),
-                    title: 'Personal',
-                  ),
-                  EasyStep(
-                    customStep: CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 7,
-                        backgroundColor:
-                        activeStep >= 1 ? Colors.blue : Colors.white,
-                      ),
-                    ),
-                    title: 'Bank',
-                    topTitle: true,
-                  ),
-                  EasyStep(
-                    customStep: CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 7,
-                        backgroundColor:
-                        activeStep >= 2 ? Colors.blue : Colors.white,
-                      ),
-                    ),
-                    title: 'Proof of Identity',
-                  ),
-                  EasyStep(
-                    customStep: CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 7,
-                        backgroundColor:
-                        activeStep >= 3 ? Colors.blue : Colors.white,
-                      ),
-                    ),
-                    title: 'Nominee',
-                    topTitle: true,
-                  ),
-                  EasyStep(
-                    customStep: CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 7,
-                        backgroundColor:
-                        activeStep >= 4 ? Colors.blue : Colors.white,
-                      ),
-                    ),
-                    title: 'Additional',
-                  ),
-                ],
-                onStepReached: (index) =>
-                    setState(() => activeStep = index),
-              ),
-            ),
+            ActiveStep(activeStep: activeStep),
             SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -321,7 +239,7 @@ class _FirstNomineeDetailState extends State<FirstNomineeDetail> {
                           padding: EdgeInsets.all(10),
                           child: ElevatedButton(
                             onPressed: () async {
-                              if(image!=null&&image2!=null&&image3!=null&&image4!=null&&passportImageFront!=null&&passportImageBack!=null) {
+                              if(image!=null&&image2!=null&&image3!=null) {
 
                                 //Image of Adhaar front
                                 File file=File(image!.path);
@@ -342,30 +260,38 @@ class _FirstNomineeDetailState extends State<FirstNomineeDetail> {
                                 print(panFront);
 
                                 //Image of Photo
-                                File file4=File(image4!.path);
-                                Uint8List imagebytes4 = await file4.readAsBytes(); //convert to bytes
-                                String photo = base64.encode(imagebytes4); //convert bytes to base64 string
-                                print(photo);
-
-                                //Image of PassportFront
-                                File file5=File(passportImageFront!.path);
-                                Uint8List imagebytes5 = await file5.readAsBytes(); //convert to bytes
-                                String adharFront5 = base64.encode(imagebytes5); //convert bytes to base64 string
-                                print(adharFront5);
-
-                                //Image of PassportBack
-                                File file6=File(passportImageBack!.path);
-                                Uint8List imagebytes6 = await file6.readAsBytes(); //convert to bytes
-                                String adharFront6 = base64.encode(imagebytes6); //convert bytes to base64 string
-                                print(adharFront6);
+                                // File file4=File(image4!.path);
+                                // Uint8List imagebytes4 = await file4.readAsBytes(); //convert to bytes
+                                // String photo = base64.encode(imagebytes4); //convert bytes to base64 string
+                                // print(photo);
+                                //
+                                // //Image of PassportFront
+                                // File file5=File(passportImageFront!.path);
+                                // Uint8List imagebytes5 = await file5.readAsBytes(); //convert to bytes
+                                // String adharFront5 = base64.encode(imagebytes5); //convert bytes to base64 string
+                                // print(adharFront5);
+                                //
+                                // //Image of PassportBack
+                                // File file6=File(passportImageBack!.path);
+                                // Uint8List imagebytes6 = await file6.readAsBytes(); //convert to bytes
+                                // String adharFront6 = base64.encode(imagebytes6); //convert bytes to base64 string
+                                // print(adharFront6);
 
                                 //Saving Image value in base64
-                                CommonValue.adhaarFrontBase64Nominee=file;
-                                CommonValue.adhaarBackBase64Nominee=file2;
-                                CommonValue.panFrontBase64Nominee=file3;
-                                CommonValue.photoBase64Nominee=file4;
-                                CommonValue.passportFrontBase64Nominee=file5;
-                                CommonValue.passportBackBase64Nominee=file6;
+                                if(file!=null) {
+                                  CommonValue.adhaarFrontBase64Nominee = file;
+                                }
+                                if(file2!=null)
+                                {CommonValue.adhaarBackBase64Nominee=file2;}
+                                if(file3!=null)
+                                {
+                                  CommonValue.panFrontBase64Nominee=file3;}
+                                // if(file4!=null){
+                                //   CommonValue.photoBase64Nominee=file4;}
+                                // if(file5!=null){
+                                //   CommonValue.passportFrontBase64Nominee=file5;}
+                                // if(file6!=null){
+                                //   CommonValue.passportBackBase64Nominee=file6;}
 
 
 

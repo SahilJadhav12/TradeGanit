@@ -5,10 +5,12 @@ import 'package:trade_ganit/AdditionalDetails.dart';
 import 'package:trade_ganit/BankDetail/BankDetail.dart';
 import 'package:trade_ganit/Common/CommonTextField.dart';
 import 'package:trade_ganit/Common/CommonValue.dart';
+import 'package:trade_ganit/Document/DocList.dart';
 import 'package:trade_ganit/FirstNomineeDetail.dart';
 import 'package:trade_ganit/FirstNomineeFromDetails.dart';
 import 'package:trade_ganit/OtpVerify/OtpVerifyCode.dart';
 import 'package:http/http.dart' as http;
+import 'package:trade_ganit/PersonalDetails/personalDetails.dart';
 import 'package:trade_ganit/ProofOfIdentifyAndAddress.dart';
 import 'package:trade_ganit/TypeSelection/SelectionType.dart';
 
@@ -27,8 +29,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const ProofOfIdentifyAndAddress(),
-      home: const SelectionType(),
+      home: const PersonalDetail(),
+      // home: const DocList(),
       // home: const MyHomePage(title: 'Trade Ganit'),
       debugShowCheckedModeBanner: false,
     );
@@ -45,6 +47,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   TextEditingController emailID = TextEditingController();
   void _navigateToPersonalDetail() {
@@ -139,4 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // Navigator.of(context).pop();
 
   }
+
+
 }

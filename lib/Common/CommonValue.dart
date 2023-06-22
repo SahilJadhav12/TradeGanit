@@ -76,6 +76,9 @@ static String accountType="";
   static String referenceMedium="";
   static String referenceDescription="";
 
+  //value of Id doc store
+  static List<String> docIdList=<String>[];
+  static List<String> docIdListName=<String>[];
 
 
 
